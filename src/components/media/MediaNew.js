@@ -81,7 +81,7 @@ export const MediaNew = ({ handleOpenModal }) => {
                         <div className='row'>
                             <div className='col'>
                                 <div class="mb-3">
-                                    <label className="form-label">Director</label>
+                                    <label className="form-label">Genero Principal</label>
                                     <select className="form-control">
                                         required
                                         <option value="">--Seleccione--</option>
@@ -91,7 +91,7 @@ export const MediaNew = ({ handleOpenModal }) => {
 
                             <div className='col'>
                                 <div class="mb-3">
-                                    <label className="form-label">Director</label>
+                                    <label className="form-label">Productora Principal</label>
                                     <select className="form-control">
                                         required
                                         <option value="">--Seleccione--</option>
@@ -101,7 +101,7 @@ export const MediaNew = ({ handleOpenModal }) => {
 
                             <div className='col'>
                                 <div class="mb-3">
-                                    <label className="form-label">Director</label>
+                                    <label className="form-label">Tipo Principal</label>
                                     <select className="form-control">
                                         required
                                         <option value="">--Seleccione--</option>
