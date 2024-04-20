@@ -3,16 +3,17 @@ import { obtenerDirector } from '../../services/directorService';
 import { obtenerGenero } from '../../services/generoService';
 import { obtenerProductora } from '../../services/productoraService';
 import {obtenerTipo} from '../../services/tipoService';
+import { crearMedia } from '../../services/mediaService'
 import Swal from 'sweetalert2';
 
-export const MediaNew = ({ handleOpenModal }) => {
+export const MediaNew = ({ handleOpenModal, listarMedias }) => {
 
     const [ directores, setDirectores ] = useState([]);
     const [ generos, setGeneros ] = useState([]);
     const [ productoras, setProductoras ] = useState([]);
     const [ tipos, setTipos] = useState([]);
     const [ valoresForm, setValoresForm ] = useState([]);
-    const { serial ='', titulo ='', sinopsis ='', AnoEstreno ='', 
+    const { serial ='', titulo ='', sinopsis ='', anoEstreno ='', 
     imagen ='', url ='', director , genero , productora , tipo } = valoresForm;
 
     const listarDirectores = async () => {
@@ -84,12 +85,37 @@ export const MediaNew = ({ handleOpenModal }) => {
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         const media = {
-            serial, titulo, sinopsis, AnoEstreno, 
-            imagen, url, director , genero , productora , tipo: {
-                
+            serial, titulo, sinopsis, anoEstreno, 
+            imagen, url, 
+            directorPrincipal: {
+                _id: director
+            } , 
+            generoPrincipal: {
+                _id: genero
+            }, 
+            productoraPrincipal: {
+                _id : productora
+            }, 
+            
+            tipoPrincipal: {
+                _id: tipo
             }
         }
-     
+        console.log(media);
+        try {
+            Swal.fire({
+                allowOutsideClick: false,
+                text: 'Cargando...'
+            });
+            Swal.showLoading();
+            const{data} = await crearMedia (media)
+            handleOpenModal();
+            listarMedias();
+            Swal.close();
+        }catch (error) {
+            console.log(error);
+            Swal.close();
+        }
     }
 
     return (
@@ -107,7 +133,7 @@ export const MediaNew = ({ handleOpenModal }) => {
                             <hr />
                         </div>
                     </div>
-                    <form>
+                    <form onSubmit={(e) => handleOnSubmit(e)} >
                         <div className='row'>
                             <div className='col'>
                                 <div className="mb-3">
@@ -153,8 +179,8 @@ export const MediaNew = ({ handleOpenModal }) => {
                             <div className='col'>
                                 <div className="mb-3">
                                     <label className="form-label">Año de Estreno</label>
-                                    <input type="date" name='AnoEstreno' 
-                                    value={AnoEstreno}
+                                    <input type="date" name='anoEstreno' 
+                                    value={anoEstreno}
                                         onChange={ e => handleOnChange(e)}
                                         required
                                         className='form-control'

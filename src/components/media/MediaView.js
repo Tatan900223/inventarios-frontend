@@ -14,7 +14,6 @@ export const MediaView = () => {
     try {
 
       const { data } = await obtenerMedia();
-      console.log(data);
       setMedias(data);
 
     } catch (error) {
