@@ -27,7 +27,16 @@ const editarMedia = (mediaId, data) => {
     });
     
     }
+//get inventario ID
+
+    const getMediaId = (mediaId) => {
+        return axiosInstance.get(`media/${mediaId}`, {
+            headers: {
+                'Content-Type' : 'application/json'
+            }
+        });
+    }
 
     export {
-        obtenerMedia, crearMedia, editarMedia
+        obtenerMedia, crearMedia, editarMedia, getMediaId
     }
