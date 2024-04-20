@@ -1,6 +1,97 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
+import { obtenerDirector } from '../../services/directorService';
+import { obtenerGenero } from '../../services/generoService';
+import { obtenerProductora } from '../../services/productoraService';
+import {obtenerTipo} from '../../services/tipoService';
+import Swal from 'sweetalert2';
 
 export const MediaNew = ({ handleOpenModal }) => {
+
+    const [ directores, setDirectores ] = useState([]);
+    const [ generos, setGeneros ] = useState([]);
+    const [ productoras, setProductoras ] = useState([]);
+    const [ tipos, setTipos] = useState([]);
+    const [ valoresForm, setValoresForm ] = useState([]);
+    const { serial ='', titulo ='', sinopsis ='', AnoEstreno ='', 
+    imagen ='', url ='', director , genero , productora , tipo } = valoresForm;
+
+    const listarDirectores = async () => {
+        try {
+                const { data } = await obtenerDirector ();
+                setDirectores (data);
+                
+        }catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        listarDirectores();
+    }, []);
+
+
+    const listarGeneros = async () => {
+        try {
+                const { data } = await obtenerGenero ();
+                setGeneros (data);
+                
+        }catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        listarGeneros();
+    }, []);
+
+
+    const listarProductoras = async () => {
+        try {
+                const { data } = await obtenerProductora ();
+                setProductoras (data);
+                
+        }catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        listarProductoras();
+    }, []);
+
+    const listarTipos = async () => {
+        try {
+                const { data } = await obtenerTipo ();
+                setTipos (data);
+                
+        }catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        listarTipos();
+    }, []);
+
+
+    const handleOnChange = ({ target }) => {
+        const {name, value} = target;
+        setValoresForm({ ...valoresForm, [name]: value});
+    }
+
+    //boton Guardar
+
+    const handleOnSubmit = async (e) => {
+        e.preventDefault();
+        const media = {
+            serial, titulo, sinopsis, AnoEstreno, 
+            imagen, url, director , genero , productora , tipo: {
+                
+            }
+        }
+     
+    }
+
     return (
         <div className='sidebar'>
             <div className='container-fluid'>
@@ -8,7 +99,7 @@ export const MediaNew = ({ handleOpenModal }) => {
                     <div className='col'>
                         <div className='sidebar-header'>
                             <h3>Nueva Media</h3>
-                            <i class="fa-solid fa-xmark" onClick={handleOpenModal}></i>
+                            <i className="fa-solid fa-xmark" onClick={handleOpenModal}></i>
                         </div>
                     </div>
                     <div className='row'>
@@ -19,60 +110,94 @@ export const MediaNew = ({ handleOpenModal }) => {
                     <form>
                         <div className='row'>
                             <div className='col'>
-                                <div class="mb-3">
+                                <div className="mb-3">
                                     <label className="form-label">Serial</label>
-                                    <input type="text" name='serial' className='form-control'
-                                        required
+                                    <input type="text" name='serial' 
+                                    value={serial}
+                                    onChange={ e => handleOnChange(e)}
+                                    required
+                                    className='form-control'    
                                     />
                                 </div>
                             </div>
 
                             <div className='col'>
-                                <div class="mb-3">
+                                <div className="mb-3">
                                     <label className="form-label">Título</label>
-                                    <input type="text" name='titulo' className='form-control' />
-                                </div>
-                            </div>
-
-                            <div className='col'>
-                                <div class="mb-3">
-                                    <label className="form-label">Sinopsis</label>
-                                    <input type="text" name='sinopsis' className='form-control' />
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div className='row'>
-                            <div className='col'>
-                                <div class="mb-3">
-                                    <label className="form-label">Año de Estreno</label>
-                                    <input type="date" name='AnoEstreno' className='form-control'
-                                        required
+                                    <input type="text" name='titulo' 
+                                    value={titulo}
+                                    onChange={ e => handleOnChange(e)}
+                                    required
+                                    className='form-control' 
+                                    
                                     />
                                 </div>
                             </div>
 
                             <div className='col'>
-                                <div class="mb-3">
+                                <div className="mb-3">
+                                    <label className="form-label">Sinopsis</label>
+                                    <input type="text" name='sinopsis' 
+                                    value={sinopsis}
+                                    onChange={ e => handleOnChange(e)}
+                                    required
+                                    className='form-control' 
+                                    
+                                    />
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div className='row'>
+                            <div className='col'>
+                                <div className="mb-3">
+                                    <label className="form-label">Año de Estreno</label>
+                                    <input type="date" name='AnoEstreno' 
+                                    value={AnoEstreno}
+                                        onChange={ e => handleOnChange(e)}
+                                        required
+                                        className='form-control'
+                                    />
+                                </div>
+                            </div>
+
+                            <div className='col'>
+                                <div className="mb-3">
                                     <label className="form-label">Imagen</label>
-                                    <input type="text" name='imagen' className='form-control' />
+                                    <input type="url" name='imagen' 
+                                    value={imagen}
+                                    onChange={ e => handleOnChange(e)}
+                                    required
+                                    className='form-control' />
                                 </div>
                             </div>
 
                             <div className='col'>
-                                <div class="mb-3">
+                                <div className="mb-3">
                                     <label className="form-label">URL</label>
-                                    <input type="text" name='url' className='form-control' />
+                                    <input type="text" name='url' 
+                                    value={url}
+                                    onChange={ e => handleOnChange(e)}
+                                    required
+                                    className='form-control' />
                                 </div>
                             </div>
 
                             <div className='col'>
-                                <div class="mb-3">
+                                <div className="mb-3">
                                     <label className="form-label">Director</label>
-                                    <select className="form-control">
+                                    <select className="form-select"
                                         required
+                                        name='director'
+                                        value={director}
+                                        onChange={ e => handleOnChange(e)}>
                                         <option value="">--Seleccione--</option>
+                                        {
+                                            directores.map(({ _id, nombre})  => {
+                                                return <option key={_id} value={_id}>{nombre}</option>
+                                            } )
+                                        }
                                     </select>
                                 </div>
                             </div>
@@ -80,38 +205,62 @@ export const MediaNew = ({ handleOpenModal }) => {
 
                         <div className='row'>
                             <div className='col'>
-                                <div class="mb-3">
+                                <div className="mb-3">
                                     <label className="form-label">Genero Principal</label>
-                                    <select className="form-control">
+                                    <select className="form-select" 
+                                        name='genero'
+                                        value={genero}
+                                        onChange={ e => handleOnChange(e)}>
                                         required
                                         <option value="">--Seleccione--</option>
+                                        {
+                                            generos.map(({ _id, nombre})  => {
+                                                return <option key={_id} value={_id}>{nombre}</option>
+                                            } )
+                                        }
                                     </select>
                                 </div>
                             </div>
 
                             <div className='col'>
-                                <div class="mb-3">
+                                <div className="mb-3">
                                     <label className="form-label">Productora Principal</label>
-                                    <select className="form-control">
+                                    <select className="form-select" 
+                                        name='productora'
+                                        value={productora}
+                                        onChange={ e => handleOnChange(e)}>
                                         required
                                         <option value="">--Seleccione--</option>
+                                        {
+                                            productoras.map(({ _id, nombre})  => {
+                                                return <option key={_id} value={_id}>{nombre}</option>
+                                            } )
+                                        }
                                     </select>
                                 </div>
                             </div>
 
                             <div className='col'>
-                                <div class="mb-3">
+                                <div className="mb-3">
                                     <label className="form-label">Tipo Principal</label>
-                                    <select className="form-control">
+                                    <select className="form-select" 
+                                        name='tipo'
+                                        value={tipo}
+                                        onChange={ e => handleOnChange(e)}>
                                         required
                                         <option value="">--Seleccione--</option>
+                                        {
+                                            tipos.map(({ _id, nombre})  => {
+                                                return <option key={_id} value={_id}>{nombre}</option>
+                                            } )
+                                        }
                                     </select>
                                 </div>
                             </div>
                         </div>
                         <div className='row'>
                             <div className='col'>
-                            <button class="btn btn-primary">Guardar</button>
+                            <button className="btn btn-primary">Guardar</button>
                             </div>
                         </div>
                     </form>
