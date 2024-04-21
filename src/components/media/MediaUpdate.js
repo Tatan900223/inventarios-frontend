@@ -108,10 +108,10 @@ export const MediaUpdate = () => {
                 anoEstreno: media.anoEstreno,
                 imagen: media.imagen,
                 url: media.url,
-                director: media.director,
-                genero: media.genero,
-                productora: media.productora,
-                tipo: media.tipo
+                director: media.directorPrincipal,
+                genero: media.generoPrincipal,
+                productora: media.productoraPrincipal,
+                tipo: media.tipoPrincipal
             });
         }
     }, [media]);
@@ -153,7 +153,15 @@ export const MediaUpdate = () => {
             Swal.close();
         }catch (error) {
             console.log(error);
+            console.log(error.response.data);
             Swal.close();
+            let mensaje;
+            if (error && error.response & error.response.data){
+                mensaje = error.response.data;
+            } else {
+                mensaje = "Ocurrió un error, por favor intente de nuevo"
+            }
+            Swal.fire('Error','Ocurrió in error, por favor verifique los datos', 'error');
         }
     }
 

@@ -20,7 +20,7 @@ return axiosInstance.post('media', data, {
 
 //metodo para Editar 
 const editarMedia = (mediaId, data) => {
-    return axiosInstance.put(`mediaId/${mediaId}`, data, {
+    return axiosInstance.put(`media/${mediaId}`, data, {
         headers: {
                'Content-Type' : 'application/json'
         }
